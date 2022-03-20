@@ -28,6 +28,13 @@ resource "azurerm_resource_group" "terraform" {
   location = "westus"
 }
 
+resource "azurerm_subnet" "internal" {
+  name                 = "internal"
+  resource_group_name  = azurerm_resource_group.terraform.name
+  virtual_network_name = azurerm_virtual_network.terraform.name
+  address_prefixes     = ["10.0.2.0/24"]
+}
+
 resource "azurerm_linux_virtual_machine_scale_set" "terraform" {
   name                = "terraform-vmss"
   resource_group_name = azurerm_resource_group.terraform.name
@@ -56,9 +63,9 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform" {
     primary = true
 
     ip_configuration {
-      name      = ["subnet1", "subnet2", "subnet3"]
+      name      = "internal"
       primary   = true
-      subnet_id = azurerm.subnet.name.id
+      subnet_id = azurerm_subnet.internal.id
     }
   }
 }
