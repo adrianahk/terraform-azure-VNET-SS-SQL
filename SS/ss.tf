@@ -56,9 +56,9 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform" {
     primary = true
 
     ip_configuration {
-      name      = "internal"
+      name      = ["subnet1", "subnet2", "subnet3"]
       primary   = true
-      subnet_id = azurerm_subnet.internal.id
+      subnet_id = azurerm_subnet.name.id
     }
   }
 }
