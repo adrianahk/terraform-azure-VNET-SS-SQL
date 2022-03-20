@@ -51,13 +51,14 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform" {
     caching              = "ReadWrite"
   }
 
-   network_interface {
+  network_interface {
     name    = "terraform"
     primary = true
+
     ip_configuration {
       name      = "internal"
       primary   = true
-      subnet_id =azurerm_subnet.terraform.id
+      subnet_id = azurerm_subnet.internal.id
     }
   }
 }
