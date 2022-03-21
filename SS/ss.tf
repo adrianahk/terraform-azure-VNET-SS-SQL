@@ -27,7 +27,7 @@ resource "azurerm_resource_group" "terraform1" {
   location = "westus"
 }
 
-resource "azurerm_virtual_network" "terraform" {
+resource "azurerm_virtual_network" "terraform1" {
   name                = "terraform_vnet"
   location            = azurerm_resource_group.terraform1.location
   resource_group_name = azurerm_resource_group.terraform1.name
