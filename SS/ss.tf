@@ -22,21 +22,27 @@ provider "azurerm" {
   features {}
 }
 
-# Create a resource group
 resource "azurerm_resource_group" "terraform" {
   name     = "terraform-resources"
   location = "westus"
 }
 
+resource "azurerm_virtual_network" "terraform" {
+  name                = "terraform_vnet"
+  location            = azurerm_resource_group.terraform.location
+  resource_group_name = azurerm_resource_group.terraform.name
+  address_space       = ["10.0.0.0/16"]
+}
+
 resource "azurerm_subnet" "internal" {
   name                 = "internal"
   resource_group_name  = azurerm_resource_group.terraform.name
-  virtual_network_name = "terraform_vnet"
+  virtual_network_name = azurerm_virtual_network.terraform.name
   address_prefixes     = ["10.0.2.0/24"]
 }
 
 resource "azurerm_linux_virtual_machine_scale_set" "terraform" {
-  name                = "terraform_vmss"
+  name                = "terraform-vmss"
   resource_group_name = azurerm_resource_group.terraform.name
   location            = azurerm_resource_group.terraform.location
   sku                 = "Standard_F2"
@@ -53,7 +59,8 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform" {
     sku       = "16.04-LTS"
     version   = "latest"
   }
-    os_disk {
+
+  os_disk {
     storage_account_type = "Standard_LRS"
     caching              = "ReadWrite"
   }
@@ -68,35 +75,4 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform" {
       subnet_id = azurerm_subnet.internal.id
     }
   }
-}
-
-
-resource "azurerm_traffic_manager_profile" "terraform" {
-  name                = "terraformteam2"
-  resource_group_name = azurerm_resource_group.terraform.name
-
-  traffic_routing_method = "Weighted"
-
-  dns_config {
-    relative_name = "terraformteam2"
-    ttl           = 100
-  }
-
-  monitor_config {
-    protocol                     = "http"
-    port                         = 80
-    path                         = "/"
-    interval_in_seconds          = 30
-    timeout_in_seconds           = 9
-    tolerated_number_of_failures = 3
-  }
-}
-
-resource "azurerm_traffic_manager_endpoint" "terraform" {
-  name                = "terraformteam2"
-  resource_group_name = azurerm_resource_group.terraform.name
-  profile_name        = azurerm_traffic_manager_profile.terraform.name
-  target              = "terraform.io"
-  type                = "externalEndpoints"
-  weight              = 100
 }
