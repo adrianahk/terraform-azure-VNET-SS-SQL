@@ -37,13 +37,26 @@ resource "azurerm_virtual_network" "terraform" {
   address_space       = ["10.0.0.0/16"]
 }
 
-resource "azurerm_subnet" "subnet" {
+resource "azurerm_subnet" "subnet1" {
+  name                 = "internal"
+  resource_group_name  = azurerm_resource_group.terraform.name
+  virtual_network_name = azurerm_virtual_network.terraform.name
+  address_prefix       = "10.0.1.0/24"
+}
+
+resource "azurerm_subnet" "subnet2" {
   name                 = "internal"
   resource_group_name  = azurerm_resource_group.terraform.name
   virtual_network_name = azurerm_virtual_network.terraform.name
   address_prefix       = "10.0.2.0/24"
 }
 
+resource "azurerm_subnet" "subnet3" {
+  name                 = "internal"
+  resource_group_name  = azurerm_resource_group.terraform.name
+  virtual_network_name = azurerm_virtual_network.terraform.name
+  address_prefix       = "10.0.3.0/24"
+}
 
 resource "azurerm_linux_virtual_machine_scale_set" "terraform" {
   name                = "terraform_vmss"
@@ -75,7 +88,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform" {
     ip_configuration {
       name      = "internal"
       primary   = true
-      subnet_id = azurerm_subnet.subnet.id
+      subnet_id = azurerm_subnet.subnet1.id
     }
   }
 }
