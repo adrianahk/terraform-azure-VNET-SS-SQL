@@ -23,8 +23,8 @@ provider "azurerm" {
 }
 
 
-resource "azurerm_subnet" "internal" {
-  name                 = "internal"
+resource "azurerm_subnet" "subnet2" {
+  name                 = "subnet2"
   resource_group_name = "terraform-resources"
   virtual_network_name = "terraform_vnet"
   address_prefixes     = ["10.0.2.0/24"]
@@ -59,7 +59,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform_ss" {
     primary = true
 
     ip_configuration {
-      name      = "internal"
+      name      = "subnet2"
       primary   = true
       subnet_id = azurerm_subnet.internal.id
     }
@@ -85,7 +85,7 @@ resource "azurerm_traffic_manager_profile" "tm" {
   }
 }
 
-resource "azurerm_traffic_manager_endpoint" "terraform" {
+resource "azurerm_traffic_manager_azure_endpoint" "terraform" {
   name                = "terraform-endpoint"
   resource_group_name = "terraform-resources"
   profile_name        = "tm-profile"
