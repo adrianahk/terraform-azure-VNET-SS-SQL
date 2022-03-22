@@ -89,6 +89,5 @@ resource "azurerm_traffic_manager_azure_endpoint" "terraform" {
   name                = "terraform-endpoint"
   resource_group_name = "terraform-resources"
   profile_name        = "tm-profile"
-  type                = "externalEndpoints"
   weight              = 100
 }
