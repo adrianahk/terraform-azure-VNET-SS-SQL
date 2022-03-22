@@ -41,7 +41,7 @@ resource "azurerm_subnet" "internal" {
   address_prefixes     = ["10.0.2.0/24"]
 }
 
-resource "azurerm_linux_virtual_machine_scale_set" "terraform" {
+resource "azurerm_linux_virtual_machine_scale_set" "terraform3" {
   name                = "terraform-vmss"
   resource_group_name = azurerm_resource_group.terraform1.name
   location            = azurerm_resource_group.terraform1.location
