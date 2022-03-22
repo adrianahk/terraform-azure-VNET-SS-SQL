@@ -61,7 +61,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform_ss" {
     ip_configuration {
       name      = "subnet2"
       primary   = true
-      subnet_id = azurerm_subnet.internal.id
+      subnet_id = azurerm_subnet.subnet2.id
     }
   }
 }
@@ -90,4 +90,6 @@ resource "azurerm_traffic_manager_azure_endpoint" "terraform" {
   resource_group_name = "terraform-resources"
   profile_id          = azurerm_traffic_manager_profile.tm.id
   weight              = 100
+  target_resource_id  = azurerm_public_ip.test.id
+
 }
