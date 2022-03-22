@@ -65,13 +65,13 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform_ss" {
     }
   }
 }
-resource "azurerm_traffic_manager_profile" "traffic_manager_terraform" {
-  name                = "traffic_manager_terraform"
+resource "azurerm_traffic_manager_profile" "tm" {
+  name                = "tm-profile"
   resource_group_name = "terraform-resources"
   traffic_routing_method = "Weighted"
 
   dns_config {
-    relative_name = "terraformteam2"
+    relative_name = "tm-profile"
     ttl           = 100
   }
 
