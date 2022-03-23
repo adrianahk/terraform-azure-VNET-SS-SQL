@@ -23,18 +23,18 @@ provider "azurerm" {
 }
 
 
-resource "azurerm_resource_group" "mysql" {
-  name     = "mysql"
+resource "azurerm_resource_group" "terraform" {
+  name     = "terraform-resources"
   location = "westus"
 }
 
-resource "azurerm_mysql_server" "mysqlserver" {
-  name                = "mysqlserver"
-  location            = azurerm_resource_group.mysqlserver.location
-  resource_group_name = azurerm_resource_group.mysqlserver.name
+resource "azurerm_mysql_server" "terraform" {
+  name                = "terraform-mysqlserver"
+  location            = azurerm_resource_group.terraform.location
+  resource_group_name = azurerm_resource_group.terraform.name
 
   administrator_login          = "mysqladmin"
-  administrator_login_password = "mysqlpassword"
+  administrator_login_password = "H@Sh1CoR3!"
 
   sku_name   = "B_Gen5_2"
   storage_mb = 5120
@@ -49,10 +49,10 @@ resource "azurerm_mysql_server" "mysqlserver" {
   ssl_minimal_tls_version_enforced  = "TLS1_2"
 }
 
-resource "azurerm_mysql_database" "mysqldb" {
-  name                = "mysqldb"
-  resource_group_name = azurerm_resource_group.mysqldb.name
-  server_name         = azurerm_mysql_server.mysqldb.name
+resource "azurerm_mysql_database" "terraform" {
+  name                = "terraformdb"
+  resource_group_name = azurerm_resource_group.terraform.name
+  server_name         = azurerm_mysql_server.terraform.name
   charset             = "utf8"
   collation           = "utf8_unicode_ci"
 }
