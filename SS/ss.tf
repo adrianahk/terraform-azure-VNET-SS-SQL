@@ -23,17 +23,17 @@ provider "azurerm" {
 }
 
 
-resource "azurerm_subnet" "subnet2" {
-  name                 = "subnet2"
-  resource_group_name = "terraform-resources"
+resource "azurerm_subnet" "subnets" {
+  name                 = "subnets"
+  resource_group_name  = "terraform-resources"
   virtual_network_name = "terraform_vnet"
-  address_prefixes     = ["10.0.2.0/24"]
+  address_prefixes     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
 }
 
 resource "azurerm_linux_virtual_machine_scale_set" "terraform_ss" {
   name                = "terraform_ss"
   resource_group_name = "terraform-resources"
-  location = "westus"
+  location            = "westus"
   sku                 = "Standard_F2"
   instances           = 1
   admin_username      = "adminuser"
@@ -59,9 +59,9 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform_ss" {
     primary = true
 
     ip_configuration {
-      name      = "subnet2"
-      primary   = true
-      subnet_id = azurerm_subnet.subnet2.id
+      name                          = "subnets"
+      private_ip_address_allocation = "Dynamic"
+      subnet_id                     = 
     }
   }
 }
@@ -86,11 +86,9 @@ resource "azurerm_traffic_manager_profile" "tm" {
 }
 
 resource "azurerm_traffic_manager_azure_endpoint" "terraform" {
-  target_resource_id = azurerm_mysql_server.wordpress.id
+  target_resource_id  = azurerm_mysql_server.wordpress.id
   name                = "terraform-endpoint"
   resource_group_name =  "terraform-resources"
   profile_id          = azurerm_traffic_manager_profile.tm.id
   weight              = 100
-  target_resource_id  = azurerm_public_ip.test.id
-
-}
+  }
