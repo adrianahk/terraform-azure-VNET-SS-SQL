@@ -73,7 +73,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform_ss" {
 
 resource "azurerm_public_ip" "ip" {
   name                = "ip"
-  location            = data.terraform_remote_state.main.outputs.resource_group_name.location
+  location            = data.terraform_remote_state.main.outputs.resource_group.location
   resource_group_name = "terraform-resources"
   allocation_method   = "Static"
   domain_name_label   = "ip-public-ip"
