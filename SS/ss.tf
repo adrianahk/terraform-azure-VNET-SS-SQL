@@ -27,6 +27,15 @@ provider "azurerm" {
   features {}
 }
 
+
+
+resource "azurerm_subnet" "internal" {
+  name                 = "internal"
+  resource_group_name  = "terraform-resources"
+  virtual_network_name = "terraform_vnet"
+  address_prefixes     = ["10.0.2.0/24"]
+}
+
 resource "azurerm_linux_virtual_machine_scale_set" "terraform_ss" {
   name                = "terraform_ss"
   resource_group_name = "terraform-resources"
@@ -56,9 +65,9 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform_ss" {
     primary = true
 
     ip_configuration {
-      name      = "subnets"
+      name      = "internal
       primary   = true
-      subnet_id = azurerm_virtual_network.terraform.subnet
+      subnet_id = azurerm_subnet.internal.subnet_id
     }
   }
 }
