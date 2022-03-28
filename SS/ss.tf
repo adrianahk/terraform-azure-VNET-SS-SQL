@@ -28,11 +28,11 @@ provider "azurerm" {
 }
 
 
-resource "azurerm_subnet" "subnet2" {
-  name                 = "subnet2"
+resource "azurerm_subnet" "subnets" {
+  name                 = "subnets"
   resource_group_name = "terraform-resources"
   virtual_network_name = "terraform_vnet"
-  address_prefixes     = ["10.0.2.0/24"]
+  address_prefixes     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
 }
 
 resource "azurerm_linux_virtual_machine_scale_set" "terraform_ss" {
@@ -64,12 +64,21 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform_ss" {
     primary = true
 
     ip_configuration {
-      name      = "subnet2"
+      name      = "subnets"
       primary   = true
-      subnet_id = azurerm_subnet.subnet2.id
+      subnet_id = azurerm_subnet.subnets.id[*]
     }
   }
 }
+
+resource "azurerm_public_ip" "ip" {
+  name                = "ip"
+  location            = data.terraform_remote_state.main.outputs.resource_group_name.location
+  resource_group_name = "terraform-resources"
+  allocation_method   = "Static"
+  domain_name_label   = "ip-public-ip"
+}
+
 resource "azurerm_traffic_manager_profile" "tm" {
   name                = "tm-profile"
   resource_group_name = "terraform-resources"
@@ -92,7 +101,7 @@ resource "azurerm_traffic_manager_profile" "tm" {
 
 
 resource "azurerm_traffic_manager_azure_endpoint" "terraform" {
-  target_resource_id  = "project-mysqlserver.mysql.database.azure.com"
+  target_resource_id  = azurerm_public_ip.ip.id
   name                = "terraform-endpoint"
   profile_id          = azurerm_traffic_manager_profile.tm.id
   weight              = 100
