@@ -103,6 +103,6 @@ resource "azurerm_traffic_manager_profile" "tm-profile" {
 resource "azurerm_traffic_manager_azure_endpoint" "terraform" {
   target_resource_id  = azurerm_public_ip.ip.id
   name                = "terraform-endpoint"
-  profile_id          = azurerm_traffic_manager_profile.tm.id
+  profile_id          = azurerm_traffic_manager_profile.tm-profile.id
   weight              = 100
 }
