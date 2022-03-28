@@ -65,12 +65,11 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform_ss" {
     primary = true
 
     ip_configuration {
-      name      = "internal
+      name      = "internal"
       primary   = true
       subnet_id = azurerm_subnet.internal.subnet_id
     }
   }
-}
 
 resource "azurerm_public_ip" "ip" {
   name                = "ip"
@@ -89,6 +88,7 @@ resource "azurerm_traffic_manager_profile" "tm-profile" {
     relative_name = "tm-profile"
     ttl           = 100
   }
+}
 
   monitor_config {
     protocol                     = "http"
@@ -98,7 +98,6 @@ resource "azurerm_traffic_manager_profile" "tm-profile" {
     timeout_in_seconds           = 9
     tolerated_number_of_failures = 3
   }
-}
 
 
 resource "azurerm_traffic_manager_azure_endpoint" "terraform" {
