@@ -79,7 +79,7 @@ resource "azurerm_public_ip" "ip" {
   domain_name_label   = "ip-public-ip"
 }
 
-resource "azurerm_traffic_manager_profile" "tm" {
+resource "azurerm_traffic_manager_profile" "tm-profile" {
   name                = "tm-profile"
   resource_group_name = "terraform-resources"
   traffic_routing_method = "Weighted"
