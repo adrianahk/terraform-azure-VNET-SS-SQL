@@ -61,7 +61,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform_ss" {
     ip_configuration {
       name      = "internal"
       primary   = true
-      subnet_id = azurerm_subnet.internal.subnet_id
+      subnet_id = data.azurerm_virtual_network.terraform.id
     }
   }
 }
@@ -93,7 +93,6 @@ resource "azurerm_traffic_manager_profile" "tm-profile" {
     timeout_in_seconds           = 9
     tolerated_number_of_failures = 3
   }
-
 
 resource "azurerm_traffic_manager_azure_endpoint" "terraform" {
   target_resource_id  = azurerm_public_ip.ip.id
