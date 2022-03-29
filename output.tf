@@ -24,3 +24,11 @@ output resource_group_location {
 output "full_info" {
  value = data.terraform_remote_state.main.outputs.*
 }
+
+output "fqdn" {
+   value = azurerm_mysql_server.project.fqdn
+ }
+
+output "recource_id" {
+  value = azurerm_mysql_database.project.id
+}
