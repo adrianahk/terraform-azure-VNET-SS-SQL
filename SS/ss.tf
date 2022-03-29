@@ -52,7 +52,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform_ss" {
     ip_configuration {
       name      = "internal"
       primary   = true
-      subnet_id = data.azurerm_virtual_network.terraform.id
+      subnet_id = data.azurerm_virtual_network.terraform.subnet_id
     }
   }
 }
