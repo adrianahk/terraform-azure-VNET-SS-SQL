@@ -91,4 +91,4 @@ resource "azurerm_traffic_manager_azure_endpoint" "terraform" {
   profile_id          = azurerm_traffic_manager_profile.tm-profile.id
   weight              = 100
 }
-}
+
