@@ -60,6 +60,10 @@ resource "azurerm_mysql_database" "project" {
    value = azurerm_mysql_server.project.fqdn
  }
 
+output "recource_id" {
+  value = azurerm_mysql_database.project.id
+}
+
 
 
 # mysql -h endpoint_get_from-console     -u  username@url_from_console   -p password
