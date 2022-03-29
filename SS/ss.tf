@@ -20,7 +20,7 @@ provider "azurerm" {
   features {}
 }
 
-resource "azurerm_linux_virtual_machine_scale_set" "terraform_ss" {
+resource "azurerm_linux_virtual_machine_scale_set" "terraform-ss" {
   name                = "terraform_ss"
   resource_group_name = "terraform-resources"
   location = "westus"
@@ -58,13 +58,6 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform_ss" {
 }
   
 
-resource "azurerm_public_ip" "ip" {
-  name                = "ip"
-  location            =  "westus"
-  resource_group_name = "terraform-resources"
-  allocation_method   = "Static"
-  domain_name_label   = "ip-public-ip"
-}
 
 resource "azurerm_traffic_manager_profile" "tm-profile" {
   name                = "tm-profile"
