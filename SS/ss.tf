@@ -27,15 +27,6 @@ provider "azurerm" {
   features {}
 }
 
-
-
-resource "azurerm_subnet" "internal" {
-  name                 = "internal"
-  resource_group_name  = "terraform-resources"
-  virtual_network_name = "terraform_vnet"
-  address_prefixes     = ["10.0.2.0/24"]
-}
-
 resource "azurerm_linux_virtual_machine_scale_set" "terraform_ss" {
   name                = "terraform_ss"
   resource_group_name = "terraform-resources"
@@ -68,17 +59,10 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform_ss" {
     ip_configuration {
       name      = "internal"
       primary   = true
-      subnet_id = azurerm_subnet.internal.subnet_id
+      subnet_id = data.azurerm_virtual_network.terraform.id
     }
   }
-
-resource "azurerm_public_ip" "ip" {
-  name                = "ip"
-  location            =  "westus"
-  resource_group_name = "terraform-resources"
-  allocation_method   = "Static"
-  domain_name_label   = "ip-public-ip"
-}
+  
 
 resource "azurerm_traffic_manager_profile" "tm-profile" {
   name                = "tm-profile"
@@ -100,11 +84,3 @@ resource "azurerm_traffic_manager_profile" "tm-profile" {
     tolerated_number_of_failures = 3
   }
 
-
-resource "azurerm_traffic_manager_azure_endpoint" "terraform" {
-  target_resource_id  = azurerm_public_ip.ip.id
-  name                = "terraform-endpoint"
-  profile_id          = azurerm_traffic_manager_profile.tm-profile.id
-  weight              = 100
-
-}
