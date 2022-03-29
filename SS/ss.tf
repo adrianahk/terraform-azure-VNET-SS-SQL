@@ -84,4 +84,3 @@ resource "azurerm_traffic_manager_profile" "tm-profile" {
     tolerated_number_of_failures = 3
   }
 
-
