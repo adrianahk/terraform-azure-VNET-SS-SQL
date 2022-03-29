@@ -13,18 +13,20 @@ output "full_info" {
  value = data.terraform_remote_state.main.outputs.*
 }
 
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "=2.97.0"
-    }
-  }
-}
+
 
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
   features {}
+}
+
+
+
+resource "azurerm_subnet" "internal" {
+  name                 = "internal"
+  resource_group_name  = "terraform-resources"
+  virtual_network_name = "terraform_vnet"
+  address_prefixes     = ["10.0.2.0/24"]
 }
 
 resource "azurerm_linux_virtual_machine_scale_set" "terraform_ss" {
@@ -34,11 +36,11 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform_ss" {
   sku                 = "Standard_F2"
   instances           = 1
   admin_username      = "adminuser"
+
   admin_ssh_key {
     username   = "adminuser"
     public_key = file("~/.ssh/id_rsa.pub")
   }
-}
 
   source_image_reference {
     publisher = "Canonical"
@@ -59,10 +61,19 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform_ss" {
     ip_configuration {
       name      = "internal"
       primary   = true
-      subnet_id = data.azurerm_virtual_network.terraform.id
+      subnet_id = azurerm_subnet.internal.subnet_id
     }
   }
+}
   
+
+resource "azurerm_public_ip" "ip" {
+  name                = "ip"
+  location            =  "westus"
+  resource_group_name = "terraform-resources"
+  allocation_method   = "Static"
+  domain_name_label   = "ip-public-ip"
+}
 
 resource "azurerm_traffic_manager_profile" "tm-profile" {
   name                = "tm-profile"
@@ -73,7 +84,6 @@ resource "azurerm_traffic_manager_profile" "tm-profile" {
     relative_name = "tm-profile"
     ttl           = 100
   }
-}
 
   monitor_config {
     protocol                     = "http"
@@ -84,3 +94,11 @@ resource "azurerm_traffic_manager_profile" "tm-profile" {
     tolerated_number_of_failures = 3
   }
 
+
+resource "azurerm_traffic_manager_azure_endpoint" "terraform" {
+  target_resource_id  = azurerm_public_ip.ip.id
+  name                = "terraform-endpoint"
+  profile_id          = azurerm_traffic_manager_profile.tm-profile.id
+  weight              = 100
+}
+}
