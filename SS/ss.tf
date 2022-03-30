@@ -52,7 +52,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform-ss" {
     ip_configuration {
       name      = "internal"
       primary   = true
-      subnet_id = 
+      subnet_id = "/subscriptions/cdb5940d-11e5-4484-8e65-fcad1f1c976c/resourceGroups/terraform-resources/providers/Microsoft.Network/virtualNetworks/terraform_vnet"
     }
   }
 }
@@ -80,7 +80,7 @@ resource "azurerm_traffic_manager_profile" "tm-profile" {
   }
 
 resource "azurerm_traffic_manager_azure_endpoint" "terraform" {
-  target_resource_id  = 
+  target_resource_id  = "/subscriptions/cdb5940d-11e5-4484-8e65-fcad1f1c976c/resourceGroups/terraform-resources/providers/Microsoft.Network/virtualNetworks/terraform_vnet/subnets/subnet3"
   name                = "terraform-endpoint"
   profile_id          = azurerm_traffic_manager_profile.tm-profile.id
   weight              = 100
