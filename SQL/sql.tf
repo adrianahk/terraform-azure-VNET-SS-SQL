@@ -31,7 +31,7 @@ output "full_info" {
 
 resource "azurerm_mysql_server" "project" {
   name                = "project-mysqlserver"
-  location            = "westus"
+  location            = "centralus"
   resource_group_name = data.terraform_remote_state.main.outputs.resource_group_name
 
   administrator_login          = "mysqladmin"  
