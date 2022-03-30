@@ -24,7 +24,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform-ss" {
   name                = "terraform-ss"
   resource_group_name = "terraform-resources"
   location            = "westus"
-  sku                 = "Standard_F2"
+  sku                 = "Standard_D32s_v4"
   instances           = 1
   admin_username      = "adminuser"
 
@@ -36,7 +36,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform-ss" {
   source_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
+    sku       = "18.04-LTS"
     version   = "latest"
   }
 
