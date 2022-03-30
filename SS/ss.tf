@@ -52,7 +52,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform-ss" {
     ip_configuration {
       name      = "internal"
       primary   = true
-      subnet_id =  "/subscriptions/9fa90ac8-c1ee-4759-ba48-216e13b0c938/resourceGroups/terraform-resources/providers/Microsoft.Network/virtualNetworks/terraform_vnet"
+      subnet_id =["/subscriptions/9fa90ac8-c1ee-4759-ba48-216e13b0c938/resourceGroups/terraform-resources/providers/Microsoft.Network/virtualNetworks/terraform_vnet/subnets/subnet3", subscriptions/9fa90ac8-c1ee-4759-ba48-216e13b0c938/resourceGroups/terraform-resources/providers/Microsoft.Network/virtualNetworks/terraform_vnet/subnets/subnet2", "/subscriptions/9fa90ac8-c1ee-4759-ba48-216e13b0c938/resourceGroups/terraform-resources/providers/Microsoft.Network/virtualNetworks/terraform_vnet/subnets/subnet1"]
     }
   }
 }
