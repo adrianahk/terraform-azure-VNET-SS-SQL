@@ -24,8 +24,14 @@ data "terraform_remote_state" "main" {
   }
 }
 
-output "full_info" {
- value = data.terraform_remote_state.main.outputs.*
+terraform {
+  backend "azurerm" {
+    resource_group_name  = "StorageAccount-ResourceGroup"
+    storage_account_name = "team2project"
+    container_name       = "tfstate"
+    key                  = "path/to/my/db/prod.terraform.tfstate"
+    access_key = "pbdzjjYmnpXTUmYIi/bLxl5qhq+iDbkHXCTFe+UhTwi1UoF1ZvzOszr/KcZFXtkvLPgm+YiyX6NI+AStIDDJsA=="
+  }
 }
 
 
@@ -56,9 +62,9 @@ resource "azurerm_mysql_database" "project" {
   collation           = "utf8_unicode_ci"
 }
 
- output "fqdn" {
-   value = azurerm_mysql_server.project.fqdn
- }
+output "fqdn" {
+  value = azurerm_mysql_server.project.fqdn
+}
 
 output "recource_id" {
   value = azurerm_mysql_database.project.id

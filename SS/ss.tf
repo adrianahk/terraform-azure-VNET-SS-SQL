@@ -1,19 +1,31 @@
+# Team1s data
 data "terraform_remote_state" "main" {
   backend = "azurerm" 
   config = {
     resource_group_name  = "StorageAccount-ResourceGroup"
     storage_account_name = "team2project"
     container_name       = "tfstate"
-    key                  = "path/to/my/asg/prod.terraform.tfstate"
+    key                  = "path/to/my/key/prod.terraform.tfstate"
     access_key           = "pbdzjjYmnpXTUmYIi/bLxl5qhq+iDbkHXCTFe+UhTwi1UoF1ZvzOszr/KcZFXtkvLPgm+YiyX6NI+AStIDDJsA=="
   }
 }
+
 
 output "full_info" {
  value = data.terraform_remote_state.main.outputs.*
 }
 
-
+# Team3s data
+data "terraform_remote_state" "team3" {
+  backend = "azurerm"
+  config = {
+    resource_group_name  = "StorageAccount-ResourceGroup"
+    storage_account_name = "team2project"
+    container_name       = "tfstate"
+    key                  = "path/to/my/db/prod.terraform.tfstate"
+    access_key = "pbdzjjYmnpXTUmYIi/bLxl5qhq+iDbkHXCTFe+UhTwi1UoF1ZvzOszr/KcZFXtkvLPgm+YiyX6NI+AStIDDJsA=="
+  }
+}
 
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
@@ -52,8 +64,8 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform-ss" {
     ip_configuration {
       name      = "internal"
       primary   = true
-      subnet_id = "/subscriptions/cdb5940d-11e5-4484-8e65-fcad1f1c976c/resourceGroups/terraform-resources/providers/Microsoft.Network/virtualNetworks/terraform_vnet"
-    }
+      subnet_id = data.terraform_remote_state.main.outputs.subnet_id
+        }
   }
 }
   
@@ -79,10 +91,14 @@ resource "azurerm_traffic_manager_profile" "tm-profile" {
   }
   }
 
-resource "azurerm_traffic_manager_azure_endpoint" "terraform" {
-  target_resource_id  = "/subscriptions/cdb5940d-11e5-4484-8e65-fcad1f1c976c/resourceGroups/terraform-resources/providers/Microsoft.DBforMySQL/servers/project-mysqlserver/databases/projectdb"
-  name                = "terraform-endpoint"
-  profile_id          = azurerm_traffic_manager_profile.tm-profile.id
-  weight              = 100
-}
+# resource "azurerm_traffic_manager_azure_endpoint" "terraform" {
+#   target_resource_id  = data.terraform_remote_state.team3.outputs.resource_id
+#   name                = "terraform-endpoint"
+#   profile_id          = azurerm_traffic_manager_profile.tm-profile.id
+#   weight              = 100
+# }
 
+
+output team3 {
+  value = data.terraform_remote_state.team3.outputs.*
+}
