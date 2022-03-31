@@ -62,6 +62,9 @@ resource "azurerm_mysql_database" "project" {
   collation           = "utf8_unicode_ci"
 }
 
+output "fqdn" {
+  value = azurerm_mysql_server.project.fqdn
+}
 
 output "recource_id" {
   value = azurerm_mysql_database.project.id
