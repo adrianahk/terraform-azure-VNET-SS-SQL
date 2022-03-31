@@ -16,7 +16,7 @@ final-step:
 
 
 final-step-destroy: 
-		cd VNET && terraform init  && terraform plan  && terraform destroy -auto-approve 
-		cd SS && terraform init  && terraform plan  && terraform destroy -auto-approve 
 		cd SQL && terraform init  && terraform plan  && terraform destroy -auto-approve 
+		cd SS && terraform init  && terraform plan  && terraform destroy -auto-approve 
+		cd VNET && terraform init  && terraform plan  && terraform destroy -auto-approve 
 
