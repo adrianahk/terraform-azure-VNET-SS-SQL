@@ -102,8 +102,3 @@ resource "azurerm_traffic_manager_profile" "tm-profile" {
    profile_id          = azurerm_traffic_manager_profile.tm-profile.id
    weight              = 100
  }
-
-
-output team3 {
-  value = data.terraform_remote_state.team3.outputs.*
-}
