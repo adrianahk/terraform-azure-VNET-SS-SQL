@@ -92,11 +92,11 @@ resource "azurerm_traffic_manager_profile" "tm-profile" {
   }
 
 # resource "azurerm_traffic_manager_azure_endpoint" "terraform" {
-#   target_resource_id  = data.terraform_remote_state.team3.outputs.resource_id
-#   name                = "terraform-endpoint"
-#   profile_id          = azurerm_traffic_manager_profile.tm-profile.id
-#   weight              = 100
-# }
+   target_resource_id  = data.terraform_remote_state.team3.outputs.resource_id
+   name                = "terraform-endpoint"
+   profile_id          = azurerm_traffic_manager_profile.tm-profile.id
+   weight              = 100
+ }
 
 
 output team3 {
