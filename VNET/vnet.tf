@@ -27,7 +27,7 @@ provider "azurerm" {
 # Create a resource group
 resource "azurerm_resource_group" "terraform" {
   name     = "terraform-resources"
-  location = "centralus"
+  location = "westus"
 }
 resource "azurerm_network_security_group" "terraform" {
   name                = "terraform-security-group"
