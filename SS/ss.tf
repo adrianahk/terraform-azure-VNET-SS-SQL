@@ -11,10 +11,6 @@ data "terraform_remote_state" "main" {
 }
 
 
-output "full_info" {
- value = data.terraform_remote_state.main.outputs.*
-}
-
 # Team3s data
 data "terraform_remote_state" "team3" {
   backend = "azurerm"
