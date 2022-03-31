@@ -41,7 +41,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "terraform-ss" {
   name                = "terraform-ss"
   resource_group_name = "terraform-resources"
   location            = "westus"
-  sku                 = "Standard_NV8as_v4"
+  sku                 = "Standard_D2_v3"
   instances           = 1
   admin_username      = "adminuser"
 
