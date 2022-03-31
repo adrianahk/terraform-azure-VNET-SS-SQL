@@ -10,7 +10,6 @@ data "terraform_remote_state" "main" {
   }
 }
 
-
 # Team3s data
 data "terraform_remote_state" "team3" {
   backend = "azurerm"
