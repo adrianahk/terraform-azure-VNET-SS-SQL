@@ -24,7 +24,7 @@ data "terraform_remote_state" "main" {
   }
 }
 
-terraform "team3" {
+terraform  {
   backend "azurerm" {
     resource_group_name  = "StorageAccount-ResourceGroup"
     storage_account_name = "team2project"
@@ -62,9 +62,6 @@ resource "azurerm_mysql_database" "project" {
   collation           = "utf8_unicode_ci"
 }
 
-output "fqdn" {
-  value = azurerm_mysql_server.project.fqdn
-}
 
 output "recource_id" {
   value = azurerm_mysql_database.project.id
